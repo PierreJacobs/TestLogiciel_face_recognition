@@ -1,6 +1,7 @@
 import face_recognition
 from PIL import Image, ImageDraw, ImageFilter
 
+from os import listdir
 from os.path import join
 
 STATIC = r'../static'
@@ -27,25 +28,18 @@ def apply_blur_mask(pil_image: Image, face_locations, /, radius=50) -> Image:
 
 def main() -> None:
 
-    image = face_recognition.load_image_file(
-        join(IMAGE_PATH, IN, 'people.jpg')
-    )
+    for image_name in listdir(join(IMAGE_PATH, IN)):
 
-    face_locations = face_recognition.face_locations(image)
-    print(f"{face_locations=}")
+        image = face_recognition.load_image_file(join(IMAGE_PATH, IN, image_name))
+        face_locations = face_recognition.face_locations(image)
 
-    rgb_pil_image = Image.fromarray(image)
-    cmyk_pil_image = rgb_pil_image.convert('CMYK')
-    pil_image = apply_blur_mask(cmyk_pil_image, face_locations)
+        pil_image = Image.fromarray(image)
+        pil_image = apply_blur_mask(pil_image, face_locations)
 
-    # Save image
-    path = join(IMAGE_PATH, OUT, "people.jpg")
-
-    try:
-        pil_image.save(path)
-    except FileNotFoundError as e:
-        print(e)
-
+        try:
+            pil_image.save(join(IMAGE_PATH, OUT, image_name))
+        except FileNotFoundError as e:
+            print(e)
 
 if __name__ == "__main__":
     exit(main())
