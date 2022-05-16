@@ -1,19 +1,32 @@
+import sys
+from os import listdir
+from os.path import join, abspath, dirname
+
 import face_recognition
 from PIL import Image, ImageDraw, ImageFilter
 
-from os import listdir
-from os.path import join
-
-STATIC = r'../static'
-IMAGE_PATH = join(STATIC, "img")
+ROOT = dirname(abspath(r"./static"))
+IMAGE_PATH = join(ROOT, r"static/img")
 IN = r'in'
 OUT = r'out'
 
-
 def apply_blur_mask(pil_image: Image, face_locations, /, radius=50) -> Image:
+    """Applies a blur mask at given locations
+
+    :param pil_image: PIL image
+    :type pil_image: Image
+
+    :param face_locations: locations of faces on `pil_image`
+    :type face_locations: nympy[ndarray]
+
+    :param radius: blur radius, defaults to 50
+    :type radius: int, optional
+
+    :return: blurred image
+    :rtype: Image
+    """
     for (top, right, bottom, left) in face_locations:
-        # Creating a blur mask
-        cropped_image = pil_image.crop((left, top, right, bottom))     
+        cropped_image = pil_image.crop((left, top, right, bottom))
         c_i_size = cropped_image.size
 
         mask = Image.new("L", c_i_size, 0)
@@ -27,6 +40,8 @@ def apply_blur_mask(pil_image: Image, face_locations, /, radius=50) -> Image:
     return pil_image
 
 def main() -> None:
+    """Runs an example
+    """
 
     for image_name in listdir(join(IMAGE_PATH, IN)):
 
@@ -38,8 +53,8 @@ def main() -> None:
 
         try:
             pil_image.save(join(IMAGE_PATH, OUT, image_name))
-        except FileNotFoundError as e:
-            print(e)
+        except FileNotFoundError as error:
+            print(error)
 
 if __name__ == "__main__":
-    exit(main())
+    sys.exit(main())

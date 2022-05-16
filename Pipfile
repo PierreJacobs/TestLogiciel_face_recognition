@@ -9,6 +9,7 @@ dlib = "*"
 face-recognition = "*"
 
 [dev-packages]
+pylint = "*"
 
 [requires]
 python_version = "3.9"
