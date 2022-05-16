@@ -5,6 +5,8 @@ name = "pypi"
 
 [packages]
 cmake = "*"
+dlib = "*"
+face-recognition = "*"
 
 [dev-packages]
 
