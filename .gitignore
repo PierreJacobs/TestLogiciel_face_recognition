@@ -4,8 +4,8 @@ src/tests/__pycache__/
 src/tests/metamorphic_tests/__pycache__/
 
 # Output images
-src/images/mistakes/in/
-src/images/mistakes/out/
+src/images/mistakes/in/*
+src/images/mistakes/out/*
 
 # Log files
 src/tests/*.log
