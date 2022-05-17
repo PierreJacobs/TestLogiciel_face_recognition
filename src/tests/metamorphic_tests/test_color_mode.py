@@ -62,7 +62,7 @@ class TestColorMode(unittest.TestCase):
 
 def suite() -> unittest.suite.TestSuite:
     """
-    Builds a suite from the `TestTest` class
+    Builds a suite from the `TestColorMode` class
     :return: test suite
     :rtype: unittest.suite.TestSuite
     """
