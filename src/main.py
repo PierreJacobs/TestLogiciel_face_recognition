@@ -20,6 +20,8 @@ def main() -> None:
 
     for image_name in listdir(join(IMAGE_PATH, IN)):
 
+        utils.change_image_format(join(IMAGE_PATH, IN, image_name))
+
         image = face_recognition.load_image_file(join(IMAGE_PATH, IN, image_name))
         face_locations = face_recognition.face_locations(image)
 
