@@ -8,15 +8,11 @@ from PIL import Image
 import utils
 from tests import test_suite
 
-ROOT = dirname(abspath(r"./static"))
-IMAGE_PATH = join(ROOT, r"static/img")
-IN = r'in'
-OUT = r'out'
 
 def main() -> None:
     """Runs all tests
     """
-
+    ROOT = dirname(abspath(r"./static"))
     _ = utils.cli_parser() # Useless for now
     suite = test_suite.TestSuite(logger_config_path=join(ROOT, r'src/logger_config.json'))
     suite.run()
