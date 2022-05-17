@@ -5,7 +5,6 @@ src/tests/metamorphic_tests/__pycache__/
 
 # Output images
 src/img_mistakes/
-src/img_mistakes_blur/
 
 # Log files
 src/tests/*.log

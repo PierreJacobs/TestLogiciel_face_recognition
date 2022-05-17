@@ -57,8 +57,8 @@ class TestColorMode(unittest.TestCase):
                 logger.debug(message)
             else:
                 logger.warning(message)
-                shutil.copy(f"./images/{image_name}", f"../img_mistakes/RGB_{image_name}")
-                shutil.copy(f"./images/BW_{image_name}", f"../img_mistakes/BW_{image_name}")
+                shutil.copy(f"./images/{image_name}", f"../img_mistakes/in/RGB_{image_name}")
+                shutil.copy(f"./images/BW_{image_name}", f"../img_mistakes/in/BW_{image_name}")
 
 def suite() -> unittest.suite.TestSuite:
     """
