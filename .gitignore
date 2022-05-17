@@ -1,9 +1,11 @@
 # pycache
 src/__pycache__/
 src/tests/__pycache__/
+src/tests/metamorphic_tests/__pycache__/
 
 # Output images
-static/img/out/
+src/img_mistakes/
+src/img_mistakes_blur/
 
 # Log files
 src/tests/*.log
