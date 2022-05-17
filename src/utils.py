@@ -69,3 +69,14 @@ def cli_parser() -> argparse.Namespace:
     parser = argparse.ArgumentParser()
     parser.add_argument('--blur', help="blur the output images", action="store_true")
     return parser.parse_args()
+
+def change_image_format(image_path):
+
+    image_formats = ["JPEG", "TIFF", "GIF", "BMP", "PNG"]
+
+    image = Image.open(image_path)
+
+    if image.format in image_formats:
+        for format in image_formats:
+            if image.format != format:
+                image.save("%s%s.%s"%(image.filename, format, format))
