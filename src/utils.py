@@ -34,19 +34,27 @@ def apply_blur_mask(pil_image: Image, face_locations, /, radius=50) -> Image:
 
     return pil_image
 
+def set_image_mode(image_name: str, mode: str) -> str:
+    if mode == 'BW':
+        return 'BW_' + image_name
+    elif mode == 'RGB':
+        return 'RGB_' + image_name
+    raise TypeError("Unexpected argument value for `mode`")
+
 def get_mode(image_name) -> str:
     mode = 'RGB'
-
     if image_name.startswith('BW'):
         mode = 'L'
     elif image_name.startswith('RGB'):
         mode = 'RGB'
-    
     return mode
 
 def blur_images(*, src: str, dest: str) -> None:
     for image_name in listdir(src):
 
+        if image_name == "empty":
+            continue
+        
         mode = get_mode(image_name)
  
         image = face_recognition.load_image_file(join(src, image_name), mode=mode)

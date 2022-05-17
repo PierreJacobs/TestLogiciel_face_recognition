@@ -3,6 +3,7 @@ import logging
 import shutil
 import face_recognition
 
+import utils
 from os import listdir
 from PIL import Image
 
@@ -16,21 +17,20 @@ class TestColorMode(unittest.TestCase):
         Sets the needs up before running the tests
         """
         img_src = r'../images/base'
-        img_dest = r'./images'
+        self.img_dest = r'./images'
 
         try:
-            shutil.copytree(img_src, img_dest)
+            shutil.copytree(img_src, self.img_dest)
         except FileExistsError:
-            shutil.rmtree(img_dest)
-            shutil.copytree(img_src, img_dest)
+            shutil.rmtree(self.img_dest)
+            shutil.copytree(img_src, self.img_dest)
 
     @classmethod
     def tearDownClass(self) -> None:
         """
         Tears the needs down after the tests 
         """
-        img_dest = r'./images'
-        shutil.rmtree(img_dest)
+        shutil.rmtree(self.img_dest)
 
     
     def test_rgb_vs_bw(self) -> None:
@@ -39,17 +39,17 @@ class TestColorMode(unittest.TestCase):
         """
         logger.info("Looping over a set of images")
 
-        for image_name in listdir(r'./images'):
+        for image_name in listdir(self.img_dest):
 
             logger.debug(f"Image: {image_name}")
 
-            image_rbg = face_recognition.load_image_file(f'./images/{image_name}')
+            image_rbg = face_recognition.load_image_file(f'{self.img_dest}/{image_name}')
             face_locations_rgb = face_recognition.face_locations(image_rbg)
             
             pil_image_rgb = Image.fromarray(image_rbg)
-            pil_image_rgb.convert('L').save(f'./images/BW_{image_name}')
+            pil_image_rgb.convert('L').save(f'{self.img_dest}/{utils.set_image_mode(image_name, "BW")}')
 
-            image_bw = face_recognition.load_image_file(f'./images/BW_{image_name}', 'L')
+            image_bw = face_recognition.load_image_file(f'{self.img_dest}/{utils.set_image_mode(image_name, "BW")}', 'L')
             face_locations_bw = face_recognition.face_locations(image_bw)
 
             message = f"Image: {image_name}, RGB: {len(face_locations_rgb)} faces, BW: {len(face_locations_bw)} faces"
@@ -57,8 +57,8 @@ class TestColorMode(unittest.TestCase):
                 logger.debug(message)
             else:
                 logger.warning(message)
-                shutil.copy(f"./images/{image_name}", f"../images/mistakes/in/RGB_{image_name}")
-                shutil.copy(f"./images/BW_{image_name}", f"../images/mistakes/in/BW_{image_name}")
+                shutil.copy(f"{self.img_dest}/{image_name}", f"../images/mistakes/in/{utils.set_image_mode(image_name, 'RGB')}")
+                shutil.copy(f"{self.img_dest}/{utils.set_image_mode(image_name, 'BW')}", f"../images/mistakes/in/{utils.set_image_mode(image_name, 'BW')}")
 
 def suite() -> unittest.suite.TestSuite:
     """
