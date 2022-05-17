@@ -1,10 +1,9 @@
 import json
-import sys
 import unittest
 import logging, logging.config
 
-from os import chdir, getcwd
-from os.path import dirname, join, realpath
+from os import chdir
+from os.path import dirname, realpath
 
 def load_logger_config(path: str) -> dict:
     """Loads the json config for the logger
@@ -34,16 +33,19 @@ def load_logger_config(path: str) -> dict:
     
     return dict_config
 
-def main() -> None:
-    """Creates and runs a test suite
-    """
-    chdir(dirname(realpath(__file__)))
+class TestSuite():
 
-    logger = logging.getLogger()
-    logging.config.dictConfig(
-        load_logger_config(r'logger_config.json')
-    )
-    logger.debug("Hello world!")
+    def __init__(self, *suite_callbacks, logger_config_path: str, **kwargs) -> None:
+        self.suite = suite_callbacks
+        
+        self.logger = logging.getLogger()
+        chdir(dirname(realpath(__file__)))
+        logging.config.dictConfig(load_logger_config(logger_config_path))
 
-if __name__ == "__main__":
-    sys.exit(main())
+        self.logger.debug("Created a new Test Suite")
+        self.logger.debug(f"Using {self.suite=}")
+
+    def run(self) -> None:
+        runner=unittest.TextTestRunner()
+        for test in self.suite:
+            runner.run(test)

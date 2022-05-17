@@ -6,15 +6,13 @@ import face_recognition
 from PIL import Image
 
 import utils
+from tests import test_suite
 
-ROOT = dirname(abspath(r"./static"))
-IMAGE_PATH = join(ROOT, r"static/img")
-IN = r'in'
-OUT = r'out'
 
 def main() -> None:
-    """Runs an example
+    """Runs all tests
     """
+<<<<<<< HEAD
 
     args = utils.cli_parser()
 
@@ -33,6 +31,12 @@ def main() -> None:
                 pil_image.save(join(IMAGE_PATH, OUT, image_name))
             except FileNotFoundError as error:
                 print(error)
+=======
+    ROOT = dirname(abspath(r"./static"))
+    _ = utils.cli_parser() # Useless for now
+    suite = test_suite.TestSuite(logger_config_path=join(ROOT, r'src/logger_config.json'))
+    suite.run()
+>>>>>>> e402a689e8d471bb0c6beb3bb84f214518af3c1d
 
 if __name__ == "__main__":
     sys.exit(main())
