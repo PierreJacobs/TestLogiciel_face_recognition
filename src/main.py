@@ -13,8 +13,8 @@ def main() -> None:
     args = utils.cli_parser()
     if args.blur:
         utils.blur_images(
-            src=join(ROOT, r'img_mistakes/in'),
-            dest=join(ROOT, r'img_mistakes/out')    
+            src=join(ROOT, r'images/mistakes/in'),
+            dest=join(ROOT, r'images/mistakes/out')    
         )
         return
 
