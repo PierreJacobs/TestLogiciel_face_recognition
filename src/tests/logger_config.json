@@ -1,0 +1,23 @@
+{
+    "version": 1,
+    "formatters": {
+        "file": {
+            "class": "logging.Formatter",
+            "format": "%(asctime)-5s - %(funcName)-5s - %(levelname)-10s: %(message)s"
+        }
+    },
+    "handlers": {
+        "file": {
+            "class": "logging.FileHandler",
+            "level": "DEBUG",
+            "filename": "test_results.log",
+            "formatter": "file"
+        }
+    },
+    "root": {
+        "level": "DEBUG",
+        "handlers": [
+            "file"
+        ]
+    }
+}
