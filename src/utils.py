@@ -1,4 +1,6 @@
 import argparse
+import shutil
+import numpy as np
 from os import listdir
 from os.path import join
 
@@ -34,13 +36,6 @@ def apply_blur_mask(pil_image: Image, face_locations, /, radius=50) -> Image:
 
     return pil_image
 
-def set_image_mode(image_name: str, mode: str) -> str:
-    if mode == 'BW':
-        return 'BW_' + image_name
-    elif mode == 'RGB':
-        return 'RGB_' + image_name
-    raise TypeError("Unexpected argument value for `mode`")
-
 def get_mode(image_name) -> str:
     mode = 'RGB'
     if image_name.startswith('BW'):
@@ -50,6 +45,9 @@ def get_mode(image_name) -> str:
     return mode
 
 def blur_images(*, src: str, dest: str) -> None:
+    raise NotImplementedError
+
+    # Will be modified later
     for image_name in listdir(src):
 
         if image_name == "empty":
@@ -88,3 +86,13 @@ def change_image_format(image_path):
         for format in image_formats:
             if image.format != format:
                 image.save("%s%s.%s"%(image.filename, format, format))
+
+def save_mistakes(*, logger, image_name: str, tt1: str, fl1: np.ndarray, tt2: str, fl2: np.ndarray, 
+                    src1: str, dest1: str, src2: str, dest2: str) -> None:
+    message = f"Image: {image_name}, {tt1}: {len(fl1)} faces, {tt2}: {len(fl2)} faces"
+    if len(fl1) == len(fl2):
+        logger.debug(message)
+    else:
+        logger.warning(message)
+        shutil.copy(src1, dest1)
+        shutil.copy(src2, dest2)

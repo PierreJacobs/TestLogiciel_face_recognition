@@ -46,18 +46,18 @@ class TestColorMode(unittest.TestCase):
             face_locations_rgb = face_recognition.face_locations(image_rbg)
             
             pil_image_rgb = Image.fromarray(image_rbg)
-            pil_image_rgb.convert('L').save(f'{self.img_dest}/{utils.set_image_mode(image_name, "BW")}')
+            pil_image_rgb.convert('L').save(f'{self.img_dest}/BW_{image_name}')
 
-            image_bw = face_recognition.load_image_file(f'{self.img_dest}/{utils.set_image_mode(image_name, "BW")}', 'L')
+            image_bw = face_recognition.load_image_file(f'{self.img_dest}/BW_{image_name}', 'L')
             face_locations_bw = face_recognition.face_locations(image_bw)
 
-            message = f"Image: {image_name}, RGB: {len(face_locations_rgb)} faces, BW: {len(face_locations_bw)} faces"
-            if len(face_locations_rgb) == len(face_locations_bw):
-                logger.debug(message)
-            else:
-                logger.warning(message)
-                shutil.copy(f"{self.img_dest}/{image_name}", f"../images/mistakes/in/{utils.set_image_mode(image_name, 'RGB')}")
-                shutil.copy(f"{self.img_dest}/{utils.set_image_mode(image_name, 'BW')}", f"../images/mistakes/in/{utils.set_image_mode(image_name, 'BW')}")
+            utils.save_mistakes(
+                logger=logger,
+                image_name=image_name, tt1='RGB', tt2='BW',
+                fl1=face_locations_rgb, fl2=face_locations_bw,
+                src1=f"{self.img_dest}/{image_name}", dest1=f"../images/mistakes/Mode/RGB/{image_name}",
+                src2=f"{self.img_dest}/BW_{image_name}", dest2=f"../images/mistakes/Mode/BW/{image_name}"
+            )
 
             with self.subTest():
                 self.assertEqual(len(face_locations_rgb), len(face_locations_bw))

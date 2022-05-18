@@ -42,7 +42,7 @@ class TestSuite():
         chdir(dirname(realpath(__file__)))
         logging.config.dictConfig(load_logger_config(logger_config_path))
 
-        self.logger.debug("Created a new Test Suite")
+        self.logger.info("Created a new Test Suite")
         self.logger.debug(f"Using {self.suite=}")
 
     def run(self) -> None:

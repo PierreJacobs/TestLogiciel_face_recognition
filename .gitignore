@@ -4,10 +4,15 @@ src/tests/__pycache__/
 src/tests/metamorphic_tests/__pycache__/
 
 # Output images
-src/images/mistakes/in/*
-!src/images/mistakes/in/empty
-src/images/mistakes/out/*
-!src/images/mistakes/out/empty
+src/images/mistakes/Mode/RGB/*
+!src/images/mistakes/Mode/RGB/empty
+src/images/mistakes/Mode/BW/*
+!src/images/mistakes/Mode/BW/empty
+
+src/images/mistakes/Format/PNG/*
+!src/images/mistakes/Format/PNG/empty
+src/images/mistakes/Format/JPG/*
+!src/images/mistakes/Format/JPG/empty
 
 # Log files
 src/tests/*.log
