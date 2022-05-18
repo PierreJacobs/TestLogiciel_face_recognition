@@ -38,6 +38,8 @@ class TestMix(unittest.TestCase):
         shutil.rmtree(self.img_dest)
     
     def test_random_mode_and_format(self):
+        """Tests random formats and modes
+        """
 
         logger.info("Looping over a set of images")
 

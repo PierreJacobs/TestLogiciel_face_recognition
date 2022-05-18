@@ -46,6 +46,8 @@ class TestSuite():
         self.logger.info(f"Using {self.suite=}")
 
     def run(self) -> None:
+        """Runs the test suite
+        """
         runner=unittest.TextTestRunner()
         for test in self.suite:
             runner.run(test)

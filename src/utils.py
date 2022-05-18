@@ -33,6 +33,11 @@ def apply_blur_mask(pil_image: Image, face_locations, /, radius=50) -> Image:
     return pil_image
 
 def blur_images(*, src: str) -> None:
+    """Blurs every image contained in `src` and subfolders of `src`
+
+    :param src: source folder
+    :type src: str
+    """
     folders = [join(src, subfolder, folder) for subfolder in listdir(src) for folder in listdir(join(src, subfolder))]
 
     for folder in folders:
