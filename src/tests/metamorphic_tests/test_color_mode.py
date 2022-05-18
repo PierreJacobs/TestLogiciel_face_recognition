@@ -14,7 +14,7 @@ class TestColorMode(unittest.TestCase):
     @classmethod
     def setUpClass(self) -> None:
         """
-        Sets the needs up before running the tests
+        Copies temp images from `../images/base`
         """
         img_src = r'../images/base'
         self.img_dest = r'./images'
@@ -28,10 +28,9 @@ class TestColorMode(unittest.TestCase):
     @classmethod
     def tearDownClass(self) -> None:
         """
-        Tears the needs down after the tests 
+        Removes the temp images
         """
         shutil.rmtree(self.img_dest)
-
     
     def test_rgb_vs_bw(self) -> None:
         """
@@ -59,6 +58,9 @@ class TestColorMode(unittest.TestCase):
                 logger.warning(message)
                 shutil.copy(f"{self.img_dest}/{image_name}", f"../images/mistakes/in/{utils.set_image_mode(image_name, 'RGB')}")
                 shutil.copy(f"{self.img_dest}/{utils.set_image_mode(image_name, 'BW')}", f"../images/mistakes/in/{utils.set_image_mode(image_name, 'BW')}")
+
+            with self.subTest():
+                self.assertEqual(len(face_locations_rgb), len(face_locations_bw))
 
 def suite() -> unittest.suite.TestSuite:
     """
