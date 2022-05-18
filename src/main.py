@@ -19,7 +19,7 @@ def main() -> None:
         return
 
     suite = test_suite.TestSuite(
-        test_color_mode.suite(), 
+        #test_color_mode.suite(), 
         test_format.suite(),
         logger_config_path=join(ROOT, r'logger_config.json')
     )
