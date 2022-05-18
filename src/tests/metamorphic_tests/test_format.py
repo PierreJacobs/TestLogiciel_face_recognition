@@ -43,7 +43,9 @@ class TestFormat(unittest.TestCase):
             png_image = Image.open(f"{self.img_dest}/{image_name}")
             if png_image.format != "PNG":
                 continue
-
+            
+            # Avoid RGBA
+            png_image = png_image.convert("RGB")
             # Get image name and remove extension
             wo_ext = "".join(image_name.split('.')[0:-1])
 

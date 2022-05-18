@@ -62,16 +62,16 @@ def cli_parser() -> argparse.Namespace:
     parser.add_argument('--blur', help="blur the output images", action="store_true")
     return parser.parse_args()
 
-def change_image_format(image_path):
+def format_image_to(in_path, out_path, out_format):
 
-    image_formats = ["JPEG", "TIFF", "GIF", "BMP", "PNG"]
+    image_formats = ["JPEG", "GIF", "BMP", "PNG"]
+    in_image = Image.open(in_path)
 
-    image = Image.open(image_path)
-
-    if image.format in image_formats:
-        for format in image_formats:
-            if image.format != format:
-                image.save("%s%s.%s"%(image.filename, format, format))
+    if in_image.format in image_formats and out_format in image_formats:
+        out_image = in_image.convert("RGB")
+        out_image.save(out_path)
+        out_image = Image.open(out_path)
+        return out_image
 
 def save_mistakes(*, logger, image_name: str, tt1: str, fl1: np.ndarray, tt2: str, fl2: np.ndarray, 
                     src1: str, dest1: str, src2: str, dest2: str) -> None:
