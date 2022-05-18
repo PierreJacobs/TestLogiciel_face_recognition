@@ -35,7 +35,7 @@ def load_logger_config(path: str) -> dict:
 
 class TestSuite():
 
-    def __init__(self, *suite_callbacks, logger_config_path: str, **kwargs) -> None:
+    def __init__(self, suite_callbacks, logger_config_path: str, **kwargs) -> None:
         self.suite = suite_callbacks
         
         self.logger = logging.getLogger()
