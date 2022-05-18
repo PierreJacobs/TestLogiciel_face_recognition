@@ -36,35 +36,26 @@ def apply_blur_mask(pil_image: Image, face_locations, /, radius=50) -> Image:
 
     return pil_image
 
-def get_mode(image_name) -> str:
-    mode = 'RGB'
-    if image_name.startswith('BW'):
-        mode = 'L'
-    elif image_name.startswith('RGB'):
-        mode = 'RGB'
-    return mode
+def blur_images(*, src: str) -> None:
+    folders = [join(src, subfolder, folder) for subfolder in listdir(src) for folder in listdir(join(src, subfolder))]
 
-def blur_images(*, src: str, dest: str) -> None:
-    raise NotImplementedError
+    for folder in folders:
+        for image_name in listdir(folder):
 
-    # Will be modified later
-    for image_name in listdir(src):
+            if image_name == "empty":
+                continue
+            
+            mode = 'L' if folder == 'BW' else 'RGB'
+            image = face_recognition.load_image_file(join(folder, image_name), mode=mode)
+            face_locations = face_recognition.face_locations(image)
 
-        if image_name == "empty":
-            continue
-        
-        mode = get_mode(image_name)
- 
-        image = face_recognition.load_image_file(join(src, image_name), mode=mode)
-        face_locations = face_recognition.face_locations(image)
+            pil_image = Image.fromarray(image)
+            pil_image = apply_blur_mask(pil_image, face_locations)
 
-        pil_image = Image.fromarray(image)
-        pil_image = apply_blur_mask(pil_image, face_locations)
-
-        try:
-            pil_image.save(join(dest, image_name))
-        except FileNotFoundError as error:
-            print(error)
+            try:
+                pil_image.save(join(folder, image_name))
+            except FileNotFoundError as error:
+                print(error)
 
 def cli_parser() -> argparse.Namespace:
     """Returns a parsed version of parameters given to the script
