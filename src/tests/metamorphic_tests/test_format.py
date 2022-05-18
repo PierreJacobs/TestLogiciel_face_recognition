@@ -100,6 +100,38 @@ class TestFormat(unittest.TestCase):
             with self.subTest():
                 self.assertEqual(len(face_locations_bmp), len(face_locations_jpg))
 
+    def test_bmp_vs_png(self):
+        """Tests the difference between bmp and png formats
+        """
+        logger.info("Looping over a set of images")
+
+        for image_name in listdir(self.img_dest):
+            bmp_image = Image.open(f"{self.img_dest}/{image_name}")
+            if bmp_image.format != "BMP":
+                continue
+
+            # Get image name and remove extension
+            wo_ext = "".join(image_name.split('.')[0:-1])
+
+            png_image = bmp_image.convert("RGB")
+            # Needs to be saved otherwise format is None
+            png_image.save(f"{self.img_dest}/{wo_ext}.png")
+            png_image = Image.open(f"{self.img_dest}/{wo_ext}.png")
+
+            face_locations_bmp = face_recognition.face_locations(np.asarray(bmp_image))
+            face_locations_png = face_recognition.face_locations(np.asarray(png_image))
+
+            utils.save_mistakes(
+                logger=logger,
+                image_name=image_name, tt1='BMP', tt2='PNG',
+                fl1=face_locations_bmp, fl2=face_locations_png,
+                src1=f"{self.img_dest}/{image_name}", dest1=f"../images/mistakes/Format/BMP/{image_name}",
+                src2=f"{self.img_dest}/{wo_ext}.png", dest2=f"../images/mistakes/Format/PNG/{wo_ext}.png"
+            )
+
+            with self.subTest():
+                self.assertEqual(len(face_locations_bmp), len(face_locations_png))
+
 def suite() -> unittest.suite.TestSuite:
     """
     Builds a suite from the `TestFormat` class
