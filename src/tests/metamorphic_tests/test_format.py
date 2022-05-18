@@ -59,10 +59,10 @@ class TestFormat(unittest.TestCase):
 
             utils.save_mistakes(
                 logger=logger,
-                image_name=image_name, tt1='PNG', tt2='JPG',
+                image_name=image_name, tt1='PNG', tt2='JPEG',
                 fl1=face_locations_png, fl2=face_locations_jpg,
                 src1=f"{self.img_dest}/{image_name}", dest1=f"../images/mistakes/Format/PNG/{image_name}",
-                src2=f"{self.img_dest}/{wo_ext}.jpg", dest2=f"../images/mistakes/Format/JPG/{wo_ext}.jpg"
+                src2=f"{self.img_dest}/{wo_ext}.jpg", dest2=f"../images/mistakes/Format/JPEG/{wo_ext}.jpg"
             )
 
             with self.subTest():
@@ -91,10 +91,10 @@ class TestFormat(unittest.TestCase):
 
             utils.save_mistakes(
                 logger=logger,
-                image_name=image_name, tt1='BMP', tt2='JPG',
+                image_name=image_name, tt1='BMP', tt2='JPEG',
                 fl1=face_locations_bmp, fl2=face_locations_jpg,
                 src1=f"{self.img_dest}/{image_name}", dest1=f"../images/mistakes/Format/BMP/{image_name}",
-                src2=f"{self.img_dest}/{wo_ext}.jpg", dest2=f"../images/mistakes/Format/JPG/{wo_ext}.jpg"
+                src2=f"{self.img_dest}/{wo_ext}.jpg", dest2=f"../images/mistakes/Format/JPEG/{wo_ext}.jpg"
             )
 
             with self.subTest():

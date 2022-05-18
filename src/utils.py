@@ -101,6 +101,6 @@ def save_mistakes(*, logger, image_name: str, tt1: str, fl1: np.ndarray, tt2: st
     if len(fl1) == len(fl2):
         logger.debug(message)
     else:
-        logger.warning(message)
+        logger.error(message)
         shutil.copy(src1, dest1)
         shutil.copy(src2, dest2)

@@ -11,8 +11,10 @@ src/images/mistakes/Mode/BW/*
 
 src/images/mistakes/Format/PNG/*
 !src/images/mistakes/Format/PNG/empty
-src/images/mistakes/Format/JPG/*
-!src/images/mistakes/Format/JPG/empty
+src/images/mistakes/Format/JPEG/*
+!src/images/mistakes/Format/JPEG/empty
+src/images/mistakes/Format/BMP/*
+!src/images/mistakes/Format/BMP/empty
 
 # Log files
 src/tests/*.log

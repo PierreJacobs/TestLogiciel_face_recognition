@@ -3,8 +3,7 @@ from os.path import join, abspath, dirname
 
 import utils
 from tests import test_suite
-from tests.metamorphic_tests import test_color_mode
-from tests.metamorphic_tests import test_format
+from tests.metamorphic_tests import test_color_mode, test_format, test_mix
 
 def main() -> None:
     """Runs all tests
@@ -19,8 +18,9 @@ def main() -> None:
         return
 
     suite = test_suite.TestSuite([
-            test_color_mode.suite(),
-            test_format.suite()
+            test_mix.suite(),
+            #test_color_mode.suite(),
+            #test_format.suite()
         ],
         logger_config_path=join(ROOT, r'logger_config.json')
     )
