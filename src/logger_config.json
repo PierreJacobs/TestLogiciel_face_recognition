@@ -9,7 +9,7 @@
     "handlers": {
         "file": {
             "class": "logging.FileHandler",
-            "level": "DEBUG",
+            "level": "INFO",
             "filename": "test_results.log",
             "formatter": "file"
         }

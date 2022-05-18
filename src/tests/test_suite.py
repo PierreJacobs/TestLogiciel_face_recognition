@@ -43,7 +43,7 @@ class TestSuite():
         logging.config.dictConfig(load_logger_config(logger_config_path))
 
         self.logger.info("Created a new Test Suite")
-        self.logger.debug(f"Using {self.suite=}")
+        self.logger.info(f"Using {self.suite=}")
 
     def run(self) -> None:
         runner=unittest.TextTestRunner()
