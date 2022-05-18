@@ -34,6 +34,8 @@ class TestFormat(unittest.TestCase):
         shutil.rmtree(self.img_dest)
 
     def test_png_vs_jpg(self):
+        """Tests the difference between png and jpg formats
+        """
         logger.info("Looping over a set of images")
 
         for image_name in listdir(self.img_dest):
@@ -65,6 +67,8 @@ class TestFormat(unittest.TestCase):
                 self.assertEqual(len(face_locations_png), len(face_locations_jpg))
 
     def test_bmp_vs_jpg(self):
+        """Tests the difference between bmp and jpg formats
+        """
         logger.info("Looping over a set of images")
 
         for image_name in listdir(self.img_dest):
