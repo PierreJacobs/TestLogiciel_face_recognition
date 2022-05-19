@@ -1,18 +1,20 @@
 import unittest
-import logging
 import shutil
-import face_recognition
+import logging
+import numpy as np
 
-import utils
 from os import listdir
 from PIL import Image
+
+import face_recognition
+
+from . import utils
 
 logger = logging.getLogger()
 
 class TestColorMode(unittest.TestCase):
 
-    @classmethod
-    def setUpClass(self) -> None:
+    def setUp(self) -> None:
         """
         Copies temp images from `../images/base`
         """
@@ -25,8 +27,7 @@ class TestColorMode(unittest.TestCase):
             shutil.rmtree(self.img_dest)
             shutil.copytree(img_src, self.img_dest)
 
-    @classmethod
-    def tearDownClass(self) -> None:
+    def tearDown(self) -> None:
         """
         Removes the temp images
         """
@@ -42,14 +43,19 @@ class TestColorMode(unittest.TestCase):
 
             logger.debug(f"Image: {image_name}")
 
-            image_rbg = face_recognition.load_image_file(f'{self.img_dest}/{image_name}')
-            face_locations_rgb = face_recognition.face_locations(image_rbg)
-            
-            pil_image_rgb = Image.fromarray(image_rbg)
-            pil_image_rgb.convert('L').save(f'{self.img_dest}/BW_{image_name}')
+            image_rgb = Image.open(f'{self.img_dest}/{image_name}')
+            image_bw = utils.format_image_to(
+                image=image_rgb,
+                out_path=f'{self.img_dest}/BW_{image_name}',
+                out_format=image_rgb.format,
+                out_mode='L'
+            )
 
-            image_bw = face_recognition.load_image_file(f'{self.img_dest}/BW_{image_name}', 'L')
-            face_locations_bw = face_recognition.face_locations(image_bw)
+            face_locations_rgb = face_recognition.face_locations(np.asarray(image_rgb))
+            face_locations_bw = face_recognition.face_locations(np.asarray(image_bw))
+
+            image_rgb.close()
+            image_bw.close()
 
             utils.save_mistakes(
                 logger=logger,

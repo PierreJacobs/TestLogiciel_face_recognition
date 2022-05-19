@@ -1,10 +1,9 @@
 import argparse
-import shutil
-import numpy as np
 from os import listdir
 from os.path import join
 
 import face_recognition
+
 from PIL import Image, ImageDraw, ImageFilter
 
 def apply_blur_mask(pil_image: Image, face_locations, /, radius=50) -> Image:
@@ -66,46 +65,3 @@ def cli_parser() -> argparse.Namespace:
     parser = argparse.ArgumentParser()
     parser.add_argument('--blur', help="blur the output images", action="store_true")
     return parser.parse_args()
-
-def format_image_to(in_path, out_path, out_format):
-
-    image_formats = ["JPEG", "GIF", "BMP", "PNG"]
-    in_image = Image.open(in_path)
-
-    if in_image.format in image_formats and out_format in image_formats:
-        out_image = in_image.convert("RGB")
-        out_image.save(out_path)
-        out_image = Image.open(out_path)
-        return out_image
-
-def save_mistakes(*, logger, image_name: str, tt1: str, fl1: np.ndarray, tt2: str, fl2: np.ndarray, 
-                    src1: str, dest1: str, src2: str, dest2: str) -> None:
-    """Saves images that are considered a miss
-    :param logger: logger used to save log messages
-    :type logger: logging.Logger
-    :param image_name: name of the image
-    :type image_name: str
-    :param tt1: comparison type of image  1
-    :type tt1: str
-    :param fl1: face locations of image 1
-    :type fl1: np.ndarray
-    :param tt2: comparison type of image 2
-    :type tt2: str
-    :param fl2: face locations of image 2
-    :type fl2: np.ndarray
-    :param src1: source of image 1
-    :type src1: str
-    :param dest1: destination of image 1
-    :type dest1: str
-    :param src2: source of image 2
-    :type src2: str
-    :param dest2: destination of image 2
-    :type dest2: str
-    """
-    message = f"Image: {image_name}, {tt1}: {len(fl1)} faces, {tt2}: {len(fl2)} faces"
-    if len(fl1) == len(fl2):
-        logger.debug(message)
-    else:
-        logger.error(message)
-        shutil.copy(src1, dest1)
-        shutil.copy(src2, dest2)

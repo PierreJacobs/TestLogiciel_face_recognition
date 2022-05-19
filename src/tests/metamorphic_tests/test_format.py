@@ -7,13 +7,14 @@ from os import listdir
 from PIL import Image
 
 import face_recognition
-import utils
+
+from . import utils
 
 logger = logging.getLogger()
 
 class TestFormat(unittest.TestCase):
-    @classmethod
-    def setUpClass(self) -> None:
+
+    def setUp(self) -> None:
         """
         Copies temp images from `../images/base`
         """
@@ -26,8 +27,7 @@ class TestFormat(unittest.TestCase):
             shutil.rmtree(self.img_dest)
             shutil.copytree(img_src, self.img_dest)
 
-    @classmethod
-    def tearDownClass(self) -> None:
+    def tearDown(self) -> None:
         """
         Removes the temp images
         """
@@ -38,24 +38,23 @@ class TestFormat(unittest.TestCase):
         """
         logger.info("Looping over a set of images")
 
-        for image_name in listdir(self.img_dest):
+        for image_name in utils.trim_listdir(listdir(self.img_dest), '.png'):
                         
             png_image = Image.open(f"{self.img_dest}/{image_name}")
-            if png_image.format != "PNG":
-                continue
-            
-            # Avoid RGBA
-            png_image = png_image.convert("RGB")
-            # Get image name and remove extension
-            wo_ext = "".join(image_name.split('.')[0:-1])
+            wo_ext, _ = utils.split_image_and_ext(image_name)
 
-            jpg_image = png_image.convert("RGB")
-            # Needs to be saved otherwise format is None
-            jpg_image.save(f"{self.img_dest}/{wo_ext}.jpg")
-            jpg_image = Image.open(f"{self.img_dest}/{wo_ext}.jpg")
+            jpg_image = utils.format_image_to(
+                image=png_image,
+                out_path=f"{self.img_dest}/{wo_ext}.jpg",
+                out_format='JPEG',
+                out_mode='RGB'
+            )
 
             face_locations_png = face_recognition.face_locations(np.asarray(png_image))
             face_locations_jpg = face_recognition.face_locations(np.asarray(jpg_image))
+
+            png_image.close()
+            jpg_image.close()
 
             utils.save_mistakes(
                 logger=logger,
@@ -73,21 +72,23 @@ class TestFormat(unittest.TestCase):
         """
         logger.info("Looping over a set of images")
 
-        for image_name in listdir(self.img_dest):
+        for image_name in utils.trim_listdir(listdir(self.img_dest), '.bmp'):
+
             bmp_image = Image.open(f"{self.img_dest}/{image_name}")
-            if bmp_image.format != "BMP":
-                continue
+            wo_ext, _ = utils.split_image_and_ext(image_name)
 
-            # Get image name and remove extension
-            wo_ext = "".join(image_name.split('.')[0:-1])
-
-            jpg_image = bmp_image.convert("RGB")
-            # Needs to be saved otherwise format is None
-            jpg_image.save(f"{self.img_dest}/{wo_ext}.jpg")
-            jpg_image = Image.open(f"{self.img_dest}/{wo_ext}.jpg")
+            jpg_image = utils.format_image_to(
+                image=bmp_image,
+                out_path=f"{self.img_dest}/{wo_ext}.jpg",
+                out_format='JPEG',
+                out_mode='RGB'
+            )
 
             face_locations_bmp = face_recognition.face_locations(np.asarray(bmp_image))
             face_locations_jpg = face_recognition.face_locations(np.asarray(jpg_image))
+
+            bmp_image.close()
+            jpg_image.close()
 
             utils.save_mistakes(
                 logger=logger,
@@ -105,21 +106,22 @@ class TestFormat(unittest.TestCase):
         """
         logger.info("Looping over a set of images")
 
-        for image_name in listdir(self.img_dest):
+        for image_name in utils.trim_listdir(listdir(self.img_dest), '.bmp'):
             bmp_image = Image.open(f"{self.img_dest}/{image_name}")
-            if bmp_image.format != "BMP":
-                continue
+            wo_ext, _ = utils.split_image_and_ext(image_name)
 
-            # Get image name and remove extension
-            wo_ext = "".join(image_name.split('.')[0:-1])
-
-            png_image = bmp_image.convert("RGB")
-            # Needs to be saved otherwise format is None
-            png_image.save(f"{self.img_dest}/{wo_ext}.png")
-            png_image = Image.open(f"{self.img_dest}/{wo_ext}.png")
+            png_image = utils.format_image_to(
+                image=bmp_image,
+                out_path=f"{self.img_dest}/{wo_ext}.png",
+                out_format='PNG',
+                out_mode='RGB'
+            )
 
             face_locations_bmp = face_recognition.face_locations(np.asarray(bmp_image))
             face_locations_png = face_recognition.face_locations(np.asarray(png_image))
+
+            bmp_image.close()
+            png_image.close()
 
             utils.save_mistakes(
                 logger=logger,

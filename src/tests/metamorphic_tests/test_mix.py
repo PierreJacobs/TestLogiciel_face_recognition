@@ -2,12 +2,14 @@ import unittest
 import logging
 import shutil
 import random
-import face_recognition
 import numpy as np
 
-import utils
 from os import listdir
 from PIL import Image
+
+import face_recognition
+
+from . import utils
 
 logger = logging.getLogger()
 
@@ -20,9 +22,6 @@ class TestMix(unittest.TestCase):
         """
         img_src = r'../images/base'
         self.img_dest = r'./images'
-        
-        self.FORMATS = ("PNG", "JPEG", "BMP")
-        self.MODES = ("L", "RGB")
 
         try:
             shutil.copytree(img_src, self.img_dest)
@@ -46,17 +45,17 @@ class TestMix(unittest.TestCase):
         for image_name in listdir(self.img_dest):
             logger.debug(f"Image: {image_name}")
 
-            # Get image name and remove extension
-            wo_ext = "".join(image_name.split('.')[0:-1])
-
-            new_format = random.choice(self.FORMATS)
-            new_mode = random.choice(self.MODES)
+            wo_ext, _ = utils.split_image_and_ext(image_name)
+            new_format = random.choice(utils.IMAGE_FORMATS)
+            new_mode = random.choice(utils.IMAGE_CMODES)
 
             image = Image.open(f"{self.img_dest}/{image_name}")
-            new_image = image.convert(new_mode)
-            # Needs to be saved otherwise format is None
-            new_image.save(f"{self.img_dest}/{wo_ext}.{new_format}")
-            new_image = Image.open(f"{self.img_dest}/{wo_ext}.{new_format}")
+            new_image = utils.format_image_to(
+                image=image,
+                out_path=f'{self.img_dest}/{wo_ext}.{new_format}',
+                out_format=new_format,
+                out_mode=new_mode
+            )
 
             try:
                 face_locations_img = face_recognition.face_locations(np.asarray(image))
@@ -64,6 +63,9 @@ class TestMix(unittest.TestCase):
             except RuntimeError:
                 logger.warning(f"Couldn't perform face recognition on: {wo_ext}.{new_format} with mode: {new_mode} using {image_name} with mode: {image.mode} as base")
                 continue
+            finally:
+                image.close()
+                new_image.close()
 
             utils.save_mistakes(
                 logger=logger,
