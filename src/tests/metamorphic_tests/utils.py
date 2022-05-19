@@ -48,7 +48,7 @@ def split_image_and_ext(image_name: str) -> tuple[str, str]:
     :rtype: tuple[str, str]
     """
     splitted = image_name.split('.')
-    return ''.join(splitted[0:-1]), splitted[-1]
+    return '.'.join(splitted[0:-1]), splitted[-1]
 
 def save_mistakes(*, logger, image_name: str, tt1: str, fl1: np.ndarray, tt2: str, fl2: np.ndarray, 
                     src1: str, dest1: str, src2: str, dest2: str) -> None:
